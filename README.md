@@ -50,6 +50,8 @@ How to sort candidates for selection.  This should be one of three types of valu
 
     Use [Alien::Build::Plugin::Prefer::SortVersions](https://metacpan.org/pod/Alien::Build::Plugin::Prefer::SortVersions).
 
+    (This is the default, and reasonable for many GitHub repositories).
+
 - false value
 
     Don't set any preference at all.  A hook must be installed, or another prefer plugin specified.

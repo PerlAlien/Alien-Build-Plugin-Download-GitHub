@@ -62,6 +62,8 @@ This will be used as the prefer hook.
 
 Use L<Alien::Build::Plugin::Prefer::SortVersions>.
 
+(This is the default, and reasonable for many GitHub repositories).
+
 =item false value
 
 Don't set any preference at all.  A hook must be installed, or another prefer plugin specified.
