@@ -2,6 +2,58 @@
 
 Alien::Build plugin to download from GitHub
 
+# SYNOPSIS
+
+    use alienfile;
+
+    ...
+
+    share {
+    
+      plugin 'Download::GitHub' => (
+        github_user => 'Perl5-Alien',
+        github_repo => 'dontpanic',
+      );
+    
+    };
+
+# DESCRIPTION
+
+This plugin will download releases from GitHub.  It is generally preferred over
+[Alien::Build::Plugin::Download::Git](https://metacpan.org/pod/Alien::Build::Plugin::Download::Git) for packages that are released on GitHub,
+as it has much fewer dependencies and is more reliable.
+
+# PROPERTIES
+
+## github\_user
+
+The GitHub user or org that owns the repository.
+
+## github\_repo
+
+The GitHub repository name.
+
+## version
+
+Regular expression that can be used to extract a version from a GitHub tag.  The
+default ( `qr/^v?(.*)$/` ) is reasonable for many GitHub repositories.
+
+## prefer
+
+How to sort candidates for selection.  This should be one of three types of values:
+
+- code reference
+
+    This will be used as the prefer hook.
+
+- true value (not code reference)
+
+    Use [Alien::Build::Plugin::Prefer::SortVersions](https://metacpan.org/pod/Alien::Build::Plugin::Prefer::SortVersions).
+
+- false value
+
+    Don't set any preference at all.  A hook must be installed, or another prefer plugin specified.
+
 # AUTHOR
 
 Author: Graham Ollis <plicease@cpan.org>
