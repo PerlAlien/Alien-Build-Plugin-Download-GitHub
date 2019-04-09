@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.02      2019-04-08 21:14:57 -0400
   - Update documentation.
   - Changed the default of the prefer property from 1 to 0.
   - When prefer property is set to 0, a default prefer hook is added, which
