@@ -8,6 +8,7 @@ use Path::Tiny qw( path );
 use JSON::PP qw( decode_json );
 use Alien::Build::Plugin;
 use Alien::Build::Plugin::Download::Negotiate;
+use Alien::Build::Plugin::Extract::Negotiate;
 
 # ABSTRACT: Alien::Build plugin to download from GitHub
 # VERSION
@@ -110,7 +111,7 @@ sub init
         }
         elsif($res->{path})
         {
-          $rel = path($res->{path})->slurp_utf8;
+          $rel = decode_json path($res->{path})->slurp_utf8;
         }
         else
         {
@@ -120,10 +121,12 @@ sub init
           type => 'list',
           list => [
             map {
+              my $release = $_;
+              my($version) = $release->{tag_name} =~ $self->version;
               my %h = (
-                filename => $_->{tag_name},
-                url      => $_->{tarball_url},
-                version  => $_->{tag_name},
+                filename => $release->{tag_name},
+                url      => $release->{tarball_url},
+                defined $version ? (version  => $version) : (),
               );
               \%h;
             } @$rel
