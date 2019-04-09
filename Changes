@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.03      2019-04-09 04:33:06 -0400
   - Fixed bug where json was improperly decoded for fetch plugins that use temp files (gh#4,gh#5)
   - Added a number of unit tests (gh#2, gh#5)
   - Fixed bug where version wasn't being correctly parsed from the index (gh#1, gh#5)
