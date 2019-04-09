@@ -153,3 +153,12 @@ sub init
 }
 
 1;
+
+=head1 CAVEATS
+
+The GitHub API is rate limited.  The unauthenticated API is especially so.  This may
+render this plugin inoperative for a short time after only a little testing.  Please see
+
+L<https://github.com/Perl5-Alien/Alien-Build-Plugin-Download-GitHub/issues/3>
+
+=cut

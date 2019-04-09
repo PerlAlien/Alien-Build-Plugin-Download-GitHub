@@ -56,6 +56,13 @@ How to sort candidates for selection.  This should be one of three types of valu
     no other prefer plugins are specified.  This may be reasonable for at least some
     GitHub repositories.  This is the default.
 
+# CAVEATS
+
+The GitHub API is rate limited.  The unauthenticated API is especially so.  This may
+render this plugin inoperative for a short time after only a little testing.  Please see
+
+[https://github.com/Perl5-Alien/Alien-Build-Plugin-Download-GitHub/issues/3](https://github.com/Perl5-Alien/Alien-Build-Plugin-Download-GitHub/issues/3)
+
 # AUTHOR
 
 Author: Graham Ollis <plicease@cpan.org>
