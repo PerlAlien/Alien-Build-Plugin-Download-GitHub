@@ -19,6 +19,10 @@ subtest 'basic load' => sub {
 
 subtest 'live tests' => sub {
 
+  # TODO: prior to merging with AB core, these tests should be skipped
+  # unless either turned on by an environment variable, or we can be
+  # certain that we have a connection with GH
+
   my $build = alienfile q{
 
     use alienfile;
@@ -29,7 +33,6 @@ subtest 'live tests' => sub {
       plugin 'Download::GitHub' => (
         github_user => 'Perl5-Alien',
         github_repo => 'dontpanic',
-        prefer      => 1,
       );
     };
 
@@ -73,6 +76,11 @@ subtest 'live tests' => sub {
   ;
 
   alien_download_ok;
+
+  my $download = $build->install_prop->{download};
+  ok(-f $download, "download file exists");
+  note("install_prop.download = $download");
+
   alien_extract_ok;
 
   my $extract = $build->install_prop->{extract};

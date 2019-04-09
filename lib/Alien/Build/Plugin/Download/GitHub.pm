@@ -37,11 +37,11 @@ as it has much fewer dependencies and is more reliable.
 
 =head2 github_user
 
-The GitHub user or org that owns the repository.
+The GitHub user or org that owns the repository.  This property is required.
 
 =head2 github_repo
 
-The GitHub repository name.
+The GitHub repository name.  This property is required.
 
 =head2 version
 
@@ -62,11 +62,11 @@ This will be used as the prefer hook.
 
 Use L<Alien::Build::Plugin::Prefer::SortVersions>.
 
-(This is the default, and reasonable for many GitHub repositories).
-
 =item false value
 
-Don't set any preference at all.  A hook must be installed, or another prefer plugin specified.
+Don't set any preference at all.  The order returned from GitHub will be used if
+no other prefer plugins are specified.  This may be reasonable for at least some
+GitHub repositories.  This is the default.
 
 =back
 
@@ -75,7 +75,7 @@ Don't set any preference at all.  A hook must be installed, or another prefer pl
 has github_user => sub { croak("github_user is required") };
 has github_repo => sub { croak("github_repo is required") };
 has version => qr/^v?(.*)$/;
-has prefer => 1;
+has prefer => 0;
 
 sub init
 {
@@ -136,6 +136,16 @@ sub init
       }
     },
   );
+
+  unless($self->prefer)
+  {
+    $meta->default_hook(
+      prefer => sub {
+        my($build, $res) = @_;
+        $res;
+      },
+    );
+  }
 
 }
 
