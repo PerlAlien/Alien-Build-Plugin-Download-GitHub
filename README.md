@@ -33,6 +33,25 @@ The GitHub user or org that owns the repository.  This property is required.
 
 The GitHub repository name.  This property is required.
 
+## include\_assets
+
+Defaulting to false, this option designates whether to include the assets of
+releases in the list of candidates for download. This should be one of three
+types of values:
+
+- true value
+
+    The full list of assets will be included in the list of candidates.
+
+- false value
+
+    No assets will be included in the list of candidates.
+
+- regular expression
+
+    If a regular expression is provided, this will include assets that match by
+    name.
+
 ## version
 
 Regular expression that can be used to extract a version from a GitHub tag.  The
@@ -66,6 +85,10 @@ render this plugin inoperative for a short time after only a little testing.  Pl
 # AUTHOR
 
 Author: Graham Ollis <plicease@cpan.org>
+
+Contributors:
+
+Roy Storey (KIWIROY)
 
 # COPYRIGHT AND LICENSE
 
