@@ -44,6 +44,29 @@ The GitHub user or org that owns the repository.  This property is required.
 
 The GitHub repository name.  This property is required.
 
+=head2 include_assets
+
+Defaulting to false, this option designates whether to include the assets of
+releases in the list of candidates for download. This should be one of three
+types of values:
+
+=over 4
+
+=item true value
+
+The full list of assets will be included in the list of candidates.
+
+=item false value
+
+No assets will be included in the list of candidates.
+
+=item regular expression
+
+If a regular expression is provided, this will include assets that match by
+name.
+
+=back
+
 =head2 version
 
 Regular expression that can be used to extract a version from a GitHub tag.  The
@@ -75,6 +98,7 @@ GitHub repositories.  This is the default.
 
 has github_user => sub { croak("github_user is required") };
 has github_repo => sub { croak("github_repo is required") };
+has include_assets => 0;
 has version => qr/^v?(.*)$/;
 has prefer => 0;
 
@@ -123,12 +147,24 @@ sub init
             map {
               my $release = $_;
               my($version) = $release->{tag_name} =~ $self->version;
-              my %h = (
+              my @results = ({
                 filename => $release->{tag_name},
                 url      => $release->{tarball_url},
                 defined $version ? (version  => $version) : (),
-              );
-              \%h;
+              });
+
+              if (my $include = $self->include_assets) {
+                my $filter = ref($include) eq 'Regexp' ? 1 : 0;
+                for my $asset(@{$release->{assets} || []}) {
+                  push @results, {
+                    asset_url => $asset->{url},
+                    filename  => $asset->{name},
+                    url       => $asset->{browser_download_url},
+                    defined $version ? (version  => $version) : (),
+                  } if (0 == $filter or $asset->{name} =~ $include);
+                }
+              }
+              @results;
             } @$rel
           ],
         };
