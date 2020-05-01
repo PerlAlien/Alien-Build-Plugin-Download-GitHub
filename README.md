@@ -1,21 +1,23 @@
-# Alien::Build::Plugin::Download::GitHub [![Build Status](https://secure.travis-ci.org/Perl5-Alien/Alien-Build-Plugin-Download-GitHub.png)](http://travis-ci.org/Perl5-Alien/Alien-Build-Plugin-Download-GitHub)
+# Alien::Build::Plugin::Download::GitHub [![Build Status](https://travis-ci.org/Perl5-Alien/Alien-Build-Plugin-Download-GitHub.svg)](http://travis-ci.org/Perl5-Alien/Alien-Build-Plugin-Download-GitHub)
 
 Alien::Build plugin to download from GitHub
 
 # SYNOPSIS
 
-    use alienfile;
+```perl
+use alienfile;
 
-    ...
+...
 
-    share {
-    
-      plugin 'Download::GitHub' => (
-        github_user => 'Perl5-Alien',
-        github_repo => 'dontpanic',
-      );
-    
-    };
+share {
+
+  plugin 'Download::GitHub' => (
+    github_user => 'Perl5-Alien',
+    github_repo => 'dontpanic',
+  );
+
+};
+```
 
 # DESCRIPTION
 
@@ -51,6 +53,15 @@ types of values:
 
     If a regular expression is provided, this will include assets that match by
     name.
+
+## tags\_only
+
+Boolean value for those repositories that do not upgrade their tags to releases.
+There are two different endpoints. One for
+[releases](https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository)
+and one for simple [tags](https://developer.github.com/v3/repos/#list-tags). The
+default is to interrogate the former for downloads. Passing a true value for
+["tags\_only"](#tags_only) interrogates the latter for downloads.
 
 ## version
 
