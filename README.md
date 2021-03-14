@@ -1,4 +1,4 @@
-# Alien::Build::Plugin::Download::GitHub [![Build Status](https://travis-ci.org/PerlAlien/Alien-Build-Plugin-Download-GitHub.svg)](http://travis-ci.org/PerlAlien/Alien-Build-Plugin-Download-GitHub)
+# Alien::Build::Plugin::Download::GitHub ![linux](https://github.com/PerlAlien/Alien-Build-Plugin-Download-GitHub/workflows/linux/badge.svg)
 
 Alien::Build plugin to download from GitHub
 
