@@ -124,7 +124,7 @@ If you do this it is recommended that you make some precautions where possible:
 
     ```
     perl Makefile.PL
-    env ALIEN_BUILD_GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+    env ALIEN_BUILD_GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} make
     make test
     ```
 

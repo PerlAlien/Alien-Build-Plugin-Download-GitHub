@@ -299,7 +299,7 @@ of a share install.  If you are doing this in GitHub Actions you can
 just set the environment variable for that stage:
 
  perl Makefile.PL
- env ALIEN_BUILD_GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+ env ALIEN_BUILD_GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} make
  make test
 
 Or if you are using L<Dist::Zilla>
