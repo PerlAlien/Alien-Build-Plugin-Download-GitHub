@@ -2,7 +2,7 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
   - Optionally use GitHub Personall Access Token when specified as
-    environment variable and using Alien::Build 2.39+ (gh#13, gh#14)
+    environment variable and using Alien::Build 2.39+ (gh#3, gh#13, gh#14)
 
 0.06      2020-05-01 09:47:42 -0600
   - Add tags_only property (gh#8 kiwiroy++)
