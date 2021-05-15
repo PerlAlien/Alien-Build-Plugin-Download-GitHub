@@ -113,6 +113,8 @@ has version => qr/^v?(.*)$/;
 has prefer => 0;
 has tags_only => 0;
 
+my $once = 1;
+
 sub init
 {
   my($self, $meta) = @_;
@@ -134,6 +136,7 @@ sub init
   );
 
   my %gh_fetch_options;
+  my $secret;
 
   foreach my $name (qw( ALIEN_BUILD_GITHUB_TOKEN GITHUB_TOKEN GITHUB_PAT ))
   {
@@ -141,15 +144,21 @@ sub init
     {
       if(eval { Alien::Build->VERSION("2.39") })
       {
-        push @{ $gh_fetch_options{http_headers} }, Authorization => "token $ENV{$name}";
-        Alien::Build->log("using the GitHub Personal Access Token in $name");
+        $secret = $ENV{$name};
+        push @{ $gh_fetch_options{http_headers} }, Authorization => "token $secret";
+        Alien::Build->log("using the GitHub Personal Access Token in $name") if $once;
+        $once = 0;
       }
       else
       {
-        Alien::Build->log("You seem to have a GitHub Personal Access Token stored in $name.");
-        Alien::Build->log("Unfortunately, the version of Alien::Build you have doesn't support");
-        Alien::Build->log("sending http headers so I can't use it.  Please upgrade to Alien::Build");
-        Alien::Build->log("2.39 or better.");
+        if($once)
+        {
+          Alien::Build->log("You seem to have a GitHub Personal Access Token stored in $name.");
+          Alien::Build->log("Unfortunately, the version of Alien::Build you have doesn't support");
+          Alien::Build->log("sending http headers so I can't use it.  Please upgrade to Alien::Build");
+          Alien::Build->log("2.39 or better.");
+          $once = 1;
+        }
       }
       last;
     }
@@ -167,6 +176,18 @@ sub init
           my $uri = URI->new($url || $build->meta_prop->{start_url});
           $uri->host eq 'api.github.com' && $uri->scheme eq 'https';
         };
+
+      # Temporarily patch the log method so that we don't log the PAT
+      my $log = \&Alien::Build::log;
+      no warnings 'redefine';
+      local *Alien::Build::log = sub {
+        if(defined $secret)
+        {
+          $_[1] =~ s/\Q$secret\E/ '#' x length($secret) /eg;
+        }
+        goto &$log;
+      };
+      use warnings;
 
       my $res = $orig->($build, $url, @the_rest, %gh_fetch_options);
       if($res->{type} eq 'file' && $res->{filename} =~ qr{^(?:releases|tags)$})
