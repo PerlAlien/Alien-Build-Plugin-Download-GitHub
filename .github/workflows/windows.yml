@@ -63,10 +63,8 @@ jobs:
 
       - name: Install Dynamic Dependencies
         run: dzil run --no-build 'cpanm --installdeps .'
-        env:
-          ALIEN_BUILD_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Tests
         run: dzil test -v
-
-
+        env:
+          ALIEN_BUILD_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
