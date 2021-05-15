@@ -6,6 +6,7 @@ use 5.008001;
 use Carp qw( croak );
 use Path::Tiny qw( path );
 use JSON::PP qw( decode_json );
+use URI;
 use Alien::Build::Plugin;
 use Alien::Build::Plugin::Download::Negotiate;
 use Alien::Build::Plugin::Extract::Negotiate;
@@ -132,11 +133,42 @@ sub init
     format  => 'tar.gz',
   );
 
+  my %gh_fetch_options;
+
+  foreach my $name (qw( ALIEN_BUILD_GITHUB_TOKEN GITHUB_TOKEN GITHUB_PAT ))
+  {
+    if(defined $ENV{$name})
+    {
+      if(eval { Alien::Build->VERSION("2.39") })
+      {
+        push @{ $gh_fetch_options{http_headers} }, Authorization => "token $ENV{$name}";
+        Alien::Build->log("using the GitHub Personal Access Token in $name");
+      }
+      else
+      {
+        Alien::Build->log("You seem to have a GitHub Personal Access Token stored in $name.");
+        Alien::Build->log("Unfortunately, the version of Alien::Build you have doesn't support");
+        Alien::Build->log("sending http headers so I can't use it.  Please upgrade to Alien::Build");
+        Alien::Build->log("2.39 or better.");
+      }
+      last;
+    }
+  }
+
   $meta->around_hook(
     fetch => sub {
       my $orig = shift;
-      my($build, $url) = @_;
-      my $res = $orig->($build, $url);
+      my($build, $url, @the_rest) = @_;
+
+      # only do special stuff when talking to GitHub API.  In particular, this
+      # avoids leaking the PAT (if specified) to other servers.
+      return $orig->($build, $url, @the_rest)
+        unless do {
+          my $uri = URI->new($url || $build->meta_prop->{start_url});
+          $uri->host eq 'api.github.com' && $uri->scheme eq 'https';
+        };
+
+      my $res = $orig->($build, $url, @the_rest, %gh_fetch_options);
       if($res->{type} eq 'file' && $res->{filename} =~ qr{^(?:releases|tags)$})
       {
         my $rel;
