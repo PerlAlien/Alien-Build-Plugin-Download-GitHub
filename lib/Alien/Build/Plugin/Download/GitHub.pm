@@ -193,9 +193,9 @@ sub init
         }
         my $version_key = $res->{filename} eq 'releases' ? 'tag_name' : 'name';
 
-        return {
-          type => 'list',
-          list => [
+        my $modified_res = {
+          type     => 'list',
+          list     => [
             map {
               my $release = $_;
               my($version) = $release->{$version_key} =~ $self->version;
@@ -220,6 +220,9 @@ sub init
             } @$rel
           ],
         };
+
+        $modified_res->{protocol} = $res->{protocol} if exists $res->{protocol};
+        return $modified_res;
       }
       else
       {
@@ -258,6 +261,9 @@ make sure that your PAT is not displayed in the log.
 =back
 
 =head1 CAVEATS
+
+This plugin does not support, and will not work if C<ALIEN_DOWNLOAD_RULE> is set to
+either C<digest_and_encrypt> or C<digest>.
 
 The GitHub API is rate limited.  Once you've reach that limit, this plugin will be 
 inoperative for a period of time until the limits reset.  When using the GitHub

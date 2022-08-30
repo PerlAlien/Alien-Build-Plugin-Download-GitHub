@@ -419,6 +419,15 @@ subtest 'live tests' => sub {
     probe sub { 'share' };
 
     share {
+      if(__PACKAGE__->can('digest'))
+      {
+        plugin 'Test::Mock',
+          check_digest => 1;
+        meta->prop->{check_digest} = 1;
+        meta->prop->{digest} = {
+          '*' => [ FAKE => 'deadbeaf' ],
+        };
+      }
       plugin 'Download::GitHub' => (
         github_user => 'PerlAlien',
         github_repo => 'dontpanic',
@@ -447,6 +456,7 @@ subtest 'live tests' => sub {
     $default,
     hash {
       field type => 'list';
+      field protocol => 'https';
       field list => bag {
         item hash sub {
           field filename => '1.02';

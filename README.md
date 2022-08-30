@@ -99,6 +99,9 @@ How to sort candidates for selection.  This should be one of three types of valu
 
 # CAVEATS
 
+This plugin does not support, and will not work if `ALIEN_DOWNLOAD_RULE` is set to
+either `digest_and_encrypt` or `digest`.
+
 The GitHub API is rate limited.  Once you've reach that limit, this plugin will be 
 inoperative for a period of time until the limits reset.  When using the GitHub
 API unauthenticated the limit is especially low.  This is usually not a problem when
