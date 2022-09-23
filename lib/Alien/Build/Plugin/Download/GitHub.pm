@@ -269,6 +269,11 @@ For security reasons, the PAT will be removed from the log.  Some Fetch plugins
 (for example the C<curl> plugin) will log HTTP requests headers so this will
 make sure that your PAT is not displayed in the log.
 
+=item ALIEN_BUILD_PLUGIN_DOWNLOAD_GITHUB_DEBUG
+
+Setting this to a true value will send additional diagnostics to the log during
+the indexing phase of the fetch.
+
 =back
 
 =head1 CAVEATS

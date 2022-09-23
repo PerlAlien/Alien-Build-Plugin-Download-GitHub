@@ -97,6 +97,11 @@ How to sort candidates for selection.  This should be one of three types of valu
     (for example the `curl` plugin) will log HTTP requests headers so this will
     make sure that your PAT is not displayed in the log.
 
+- ALIEN\_BUILD\_PLUGIN\_DOWNLOAD\_GITHUB\_DEBUG
+
+    Setting this to a true value will send additional diagnostics to the log during
+    the indexing phase of the fetch.
+
 # CAVEATS
 
 This plugin does not support, and will not work if `ALIEN_DOWNLOAD_RULE` is set to
