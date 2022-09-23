@@ -4,7 +4,9 @@ Revision history for {{$dist->name}}
   - Added options asset, asset_format and asset_name (gh#20, gh#23)
   - This plugin adds itself as a prereq when used by an alienfile
     (gh#11, gh#23)
-  - the old include_assets property is deprecated (gh#24)
+  - The old include_assets property is deprecated (gh#24)
+  - Fixed bug where some ALIEN_DOWNLOAD_RULE configs would cause failure
+    in test (gh#24)
 
 0.08      2022-09-23 11:18:27 -0600
   - This plugin now requires Alien::Build of at least 2.39 (gh#21)
