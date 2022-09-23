@@ -37,6 +37,8 @@ The GitHub repository name.  This property is required.
 
 ## include\_assets
 
+\[deprecated: use the asset\* properties instead\]
+
 Defaulting to false, this option designates whether to include the assets of
 releases in the list of candidates for download. This should be one of three
 types of values:
