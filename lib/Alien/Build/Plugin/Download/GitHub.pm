@@ -113,15 +113,38 @@ has version => qr/^v?(.*)$/;
 has prefer => 0;
 has tags_only => 0;
 
+=head2 asset
+
+Download from assets instead of via tag.  This option is incompatible with
+C<tags_only>.
+
+=head2 asset_name
+
+Regular expression which the asset name should match.  The default is C<qr/\.tar\.gz$/>.
+
+=head2 asset_format
+
+The format of the asset.  This is passed to L<Alien::Build::Plugin::Extract::Negotiate>
+so any format supported by that is valid.
+
+=cut
+
+has asset => 0;
+has asset_name => qr/\.tar\.gz$/;
+has asset_format => 'tar.gz';
+
 my $once = 1;
 
 sub init
 {
   my($self, $meta) = @_;
 
-  if(defined $meta->prop->{start_url})
+  croak("Don't set set a start_url with the Download::GitHub plugin") if defined $meta->prop->{start_url};
+  croak("cannot use both asset and tag_only") if $self->asset && $self->tags_only;
+
+  if($self->asset)
   {
-    croak("Don't set set a start_url with the Download::GitHub plugin");
+    $meta->add_requires('configure' => 'Alien::Build::Plugin::Download::GitHub' => '0.09' );
   }
 
   my $endpoint = $self->tags_only ? 'tags' : 'releases' ;
@@ -131,9 +154,19 @@ sub init
     prefer  => $self->prefer,
     version => $self->version,
   );
-  $meta->apply_plugin('Extract',
-    format  => 'tar.gz',
-  );
+
+  if($self->asset && $self->asset_format)
+  {
+    $meta->apply_plugin('Extract',
+      format  => $self->asset_format,
+    );
+  }
+  else
+  {
+    $meta->apply_plugin('Extract',
+      format  => 'tar.gz',
+    );
+  }
 
   my %gh_fetch_options;
   my $secret;
@@ -204,33 +237,68 @@ sub init
           }));
         }
 
-        my $res2 = {
-          type     => 'list',
-          list     => [
-            map {
-              my $release = $_;
-              my($version) = $release->{$version_key} =~ $self->version;
-              my @results = ({
-                filename => $release->{$version_key},
-                url      => $release->{tarball_url},
-                defined $version ? (version  => $version) : (),
-              });
+        my $res2;
 
-              if (my $include = $self->include_assets) {
-                my $filter = ref($include) eq 'Regexp' ? 1 : 0;
-                for my $asset(@{$release->{assets} || []}) {
-                  push @results, {
-                    asset_url => $asset->{url},
-                    filename  => $asset->{name},
-                    url       => $asset->{browser_download_url},
-                    defined $version ? (version  => $version) : (),
-                  } if (0 == $filter or $asset->{name} =~ $include);
-                }
+        if($self->asset)
+        {
+          $res2 = {
+            type => 'list',
+            list => [],
+          };
+
+          foreach my $release (@$rel)
+          {
+            foreach my $asset (@{ $release->{assets} })
+            {
+              if($asset->{name} =~ $self->asset_name)
+              {
+                push @{ $res2->{list} }, {
+                  filename => $asset->{name},
+                  url      => $asset->{browser_download_url},
+                  version  => $release->{name},
+                };
               }
-              @results;
-            } @$rel
-          ],
-        };
+            }
+          }
+        }
+        else
+        {
+          $res2 = {
+            type     => 'list',
+            list     => [
+              map {
+                my $release = $_;
+                my($version) = $release->{$version_key} =~ $self->version;
+                my @results = ({
+                  filename => $release->{$version_key},
+                  url      => $release->{tarball_url},
+                  defined $version ? (version  => $version) : (),
+                });
+
+                if (my $include = $self->include_assets) {
+                  my $filter = ref($include) eq 'Regexp' ? 1 : 0;
+                  for my $asset(@{$release->{assets} || []}) {
+                    push @results, {
+                      asset_url => $asset->{url},
+                      filename  => $asset->{name},
+                      url       => $asset->{browser_download_url},
+                      defined $version ? (version  => $version) : (),
+                    } if (0 == $filter or $asset->{name} =~ $include);
+                  }
+                }
+                @results;
+              } @$rel
+            ],
+          };
+        }
+
+        if($ENV{ALIEN_BUILD_PLUGIN_DOWNLOAD_GITHUB_DEBUG})
+        {
+          require YAML;
+          $build->log(YAML::Dump({
+            res2 => $res2,
+          }));
+        }
 
         $res2->{protocol} = $res->{protocol} if exists $res->{protocol};
         return $res2;
