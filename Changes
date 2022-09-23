@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.08      2022-09-23 11:18:27 -0600
   - This plugin now requires Alien::Build of at least 2.39 (gh#21)
   - Compatability with ALIEN_DOWNLOAD_RULE overrides (gh#18)
   - You can set ALIEN_BUILD_PLUGIN_DOWNLOAD_GITHUB_DEBUG to get additional
