@@ -193,7 +193,18 @@ sub init
         }
         my $version_key = $res->{filename} eq 'releases' ? 'tag_name' : 'name';
 
-        my $modified_res = {
+        if($ENV{ALIEN_BUILD_PLUGIN_DOWNLOAD_GITHUB_DEBUG})
+        {
+          require YAML;
+          my $url = $url || $meta->prop->{start_url};
+          $url = URI->new($url);
+          $build->log(YAML::Dump({
+            url => $url->path,
+            res => $rel,
+          }));
+        }
+
+        my $res2 = {
           type     => 'list',
           list     => [
             map {
@@ -221,8 +232,8 @@ sub init
           ],
         };
 
-        $modified_res->{protocol} = $res->{protocol} if exists $res->{protocol};
-        return $modified_res;
+        $res2->{protocol} = $res->{protocol} if exists $res->{protocol};
+        return $res2;
       }
       else
       {
