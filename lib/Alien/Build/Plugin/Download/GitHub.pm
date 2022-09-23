@@ -163,6 +163,10 @@ sub init
   {
     $meta->add_requires('configure' => 'Alien::Build::Plugin::Download::GitHub' => '0.09' );
   }
+  else
+  {
+    $meta->add_requires('configure' => 'Alien::Build::Plugin::Download::GitHub' => 0 );
+  }
 
   my $endpoint = $self->tags_only ? 'tags' : 'releases' ;
   $meta->prop->{start_url} ||= "https://api.github.com/repos/@{[ $self->github_user ]}/@{[ $self->github_repo ]}/$endpoint";
