@@ -100,6 +100,24 @@ Regular expression which the asset name should match.  The default is `qr/\.tar\
 The format of the asset.  This is passed to [Alien::Build::Plugin::Extract::Negotiate](https://metacpan.org/pod/Alien::Build::Plugin::Extract::Negotiate)
 so any format supported by that is valid.
 
+## asset\_convert\_version
+
+This is an optional code reference which can be used to modify the version.  For example,
+if the release version is prefixed with a `v` You could do this:
+
+```perl
+plugin 'Download::GitHub' => (
+  github_user => 'PerlAlien',
+  github_repo => 'dontpanic',
+  asset => 1,
+  asset_convert_version => sub {
+    my $version = shift;
+    $version =~ s/^v//;
+    $version;
+  },
+);
+```
+
 # ENVIRONMENT
 
 - ALIEN\_BUILD\_GITHUB\_TOKEN GITHUB\_TOKEN GITHUB\_PAT
