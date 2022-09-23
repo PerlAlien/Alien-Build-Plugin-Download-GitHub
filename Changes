@@ -1,7 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
-  - Added options asset, asset_format and asset_name (gh#22)
+  - Added options asset, asset_format and asset_name (gh#20, gh#23)
 
 0.08      2022-09-23 11:18:27 -0600
   - This plugin now requires Alien::Build of at least 2.39 (gh#21)
