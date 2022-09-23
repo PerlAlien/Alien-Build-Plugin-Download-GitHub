@@ -82,7 +82,7 @@ jobs:
         run: |
           cip script
         env:
-          CIP_ENV: ALIEN_BUILD_GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+          CIP_ENV: ${{ matrix.cip.env }} ALIEN_BUILD_GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
 
       - name: CPAN log
         if: ${{ failure() }}
