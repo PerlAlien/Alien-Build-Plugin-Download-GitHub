@@ -142,24 +142,10 @@ sub init
   {
     if(defined $ENV{$name})
     {
-      if(eval { Alien::Build->VERSION("2.39") })
-      {
-        $secret = $ENV{$name};
-        push @{ $gh_fetch_options{http_headers} }, Authorization => "token $secret";
-        Alien::Build->log("using the GitHub Personal Access Token in $name") if $once;
-        $once = 0;
-      }
-      else
-      {
-        if($once)
-        {
-          Alien::Build->log("You seem to have a GitHub Personal Access Token stored in $name.");
-          Alien::Build->log("Unfortunately, the version of Alien::Build you have doesn't support");
-          Alien::Build->log("sending http headers so I can't use it.  Please upgrade to Alien::Build");
-          Alien::Build->log("2.39 or better.");
-          $once = 1;
-        }
-      }
+      $secret = $ENV{$name};
+      push @{ $gh_fetch_options{http_headers} }, Authorization => "token $secret";
+      Alien::Build->log("using the GitHub Personal Access Token in $name") if $once;
+      $once = 0;
       last;
     }
   }
