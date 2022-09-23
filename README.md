@@ -1,4 +1,4 @@
-# Alien::Build::Plugin::Download::GitHub ![linux](https://github.com/PerlAlien/Alien-Build-Plugin-Download-GitHub/workflows/linux/badge.svg) ![macos](https://github.com/PerlAlien/Alien-Build-Plugin-Download-GitHub/workflows/macos/badge.svg) ![windows](https://github.com/PerlAlien/Alien-Build-Plugin-Download-GitHub/workflows/windows/badge.svg) ![cygwin](https://github.com/PerlAlien/Alien-Build-Plugin-Download-GitHub/workflows/cygwin/badge.svg) ![msys2-mingw](https://github.com/PerlAlien/Alien-Build-Plugin-Download-GitHub/workflows/msys2-mingw/badge.svg)
+# Alien::Build::Plugin::Download::GitHub ![linux](https://github.com/PerlAlien/Alien-Build-Plugin-Download-GitHub/workflows/linux/badge.svg) ![macos](https://github.com/PerlAlien/Alien-Build-Plugin-Download-GitHub/workflows/macos/badge.svg) ![windows](https://github.com/PerlAlien/Alien-Build-Plugin-Download-GitHub/workflows/windows/badge.svg) ![msys2-mingw](https://github.com/PerlAlien/Alien-Build-Plugin-Download-GitHub/workflows/msys2-mingw/badge.svg)
 
 Alien::Build plugin to download from GitHub
 
