@@ -456,7 +456,12 @@ subtest 'live tests' => sub {
     $default,
     hash {
       field type => 'list';
-      field protocol => 'https';
+
+      ## NOTE: depending on the version of AB this may or may
+      ## not be set.  When the version of AB is bumped sufficently,
+      ## we should make this check.
+      #field protocol => 'https';
+
       field list => bag {
         item hash sub {
           field filename => '1.02';
@@ -480,6 +485,8 @@ subtest 'live tests' => sub {
         };
         etc;
       };
+
+      etc;
     },
     'see that we have 0.90, 1.00, 1.01 and 1.02 at least',
   ;
