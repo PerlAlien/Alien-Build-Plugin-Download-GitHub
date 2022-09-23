@@ -12,6 +12,7 @@ subtest 'basic load' => sub {
   my %mock_response = (
     type     => 'file',
     filename => 'releases',
+    protocol => 'https',
   );
 
   my $mock1 = mock 'Alien::Build::Plugin::Download::Negotiate' => (
@@ -108,6 +109,7 @@ subtest 'basic load' => sub {
       $build->fetch,
       {
         type => 'list',
+        protocol => 'https',
         list => [
           { filename => 'v1.01', url => 'https://api.github.com/repos/PerlAlien/dontpanic/tarball/v1.01', version => '1.01' },
           { filename => '1.00',  url => 'https://api.github.com/repos/PerlAlien/dontpanic/tarball/1.00',  version => '1.00' },
@@ -187,6 +189,7 @@ subtest 'basic load' => sub {
       $build->fetch,
       {
         type => 'list',
+        protocol => 'https',
         list => [
           { filename => 'v1.01', url => 'https://api.github.com/repos/PerlAlien/dontpanic/tarball/v1.01', version => '1.01' },
           { filename => '1.00',  url => 'https://api.github.com/repos/PerlAlien/dontpanic/tarball/1.00',  version => '1.00' },
@@ -287,6 +290,7 @@ subtest 'basic load' => sub {
     is $build->fetch,
       {
         type => 'list',
+        protocol => 'https',
         list => [
         { filename => 'v1.01', url => 'https://api.github.com/repos/PerlAlien/dontpanic/tarball/v1.01', version => '1.01' },
         {
@@ -320,6 +324,7 @@ subtest 'basic load' => sub {
     is $build->fetch,
       {
         type => 'list',
+        protocol => 'https',
         list => [
         { filename => 'v1.01', url => 'https://api.github.com/repos/PerlAlien/dontpanic/tarball/v1.01', version => '1.01' },
         {
@@ -372,6 +377,7 @@ subtest 'basic load' => sub {
     alienfile_skip_if_missing_prereqs;
 
     is $build->fetch, {
+      protocol => 'https',
       list => [
         {
           filename => 'v1.01',
