@@ -127,11 +127,28 @@ Regular expression which the asset name should match.  The default is C<qr/\.tar
 The format of the asset.  This is passed to L<Alien::Build::Plugin::Extract::Negotiate>
 so any format supported by that is valid.
 
+=head2 asset_convert_version
+
+This is an optional code reference which can be used to modify the version.  For example,
+if the release version is prefixed with a C<v> You could do this:
+
+ plugin 'Download::GitHub' => (
+   github_user => 'PerlAlien',
+   github_repo => 'dontpanic',
+   asset => 1,
+   asset_convert_version => sub {
+     my $version = shift;
+     $version =~ s/^v//;
+     $version;
+   },
+ );
+
 =cut
 
 has asset => 0;
 has asset_name => qr/\.tar\.gz$/;
 has asset_format => 'tar.gz';
+has asset_convert_version => 0;
 
 my $once = 1;
 
@@ -255,7 +272,7 @@ sub init
                 push @{ $res2->{list} }, {
                   filename => $asset->{name},
                   url      => $asset->{browser_download_url},
-                  version  => $release->{name},
+                  version  => $self->asset_convert_version ? $self->asset_convert_version->($release->{name}) : $release->{name},
                 };
               }
             }
