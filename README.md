@@ -86,6 +86,20 @@ How to sort candidates for selection.  This should be one of three types of valu
     no other prefer plugins are specified.  This may be reasonable for at least some
     GitHub repositories.  This is the default.
 
+## asset
+
+Download from assets instead of via tag.  This option is incompatible with
+`tags_only`.
+
+## asset\_name
+
+Regular expression which the asset name should match.  The default is `qr/\.tar\.gz$/`.
+
+## asset\_format
+
+The format of the asset.  This is passed to [Alien::Build::Plugin::Extract::Negotiate](https://metacpan.org/pod/Alien::Build::Plugin::Extract::Negotiate)
+so any format supported by that is valid.
+
 # ENVIRONMENT
 
 - ALIEN\_BUILD\_GITHUB\_TOKEN GITHUB\_TOKEN GITHUB\_PAT
