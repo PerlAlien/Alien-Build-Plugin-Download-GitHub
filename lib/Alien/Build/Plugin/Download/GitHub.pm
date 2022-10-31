@@ -129,6 +129,11 @@ Regular expression which the asset name should match.  The default is C<qr/\.tar
 The format of the asset.  This is passed to L<Alien::Build::Plugin::Extract::Negotiate>
 so any format supported by that is valid.
 
+[version 0.10]
+
+If this is set to C<none> then no extractor will be added.  This allows for you to write
+your own extractor code, or use a non-standard one.
+
 =head2 asset_convert_version
 
 This is an optional code reference which can be used to modify the version.  For example,
@@ -178,17 +183,20 @@ sub init
     version => $self->version,
   );
 
-  if($self->asset && $self->asset_format)
+  if($self->asset_format ne 'none')
   {
-    $meta->apply_plugin('Extract',
-      format  => $self->asset_format,
-    );
-  }
-  else
-  {
-    $meta->apply_plugin('Extract',
-      format  => 'tar.gz',
-    );
+    if($self->asset && $self->asset_format)
+    {
+      $meta->apply_plugin('Extract',
+        format  => $self->asset_format,
+      )
+    }
+    else
+    {
+      $meta->apply_plugin('Extract',
+        format  => 'tar.gz',
+      );
+    }
   }
 
   my %gh_fetch_options;
