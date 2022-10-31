@@ -249,7 +249,7 @@ sub init
         }
         elsif($res->{path})
         {
-          $rel = decode_json path($res->{path})->slurp;
+          $rel = decode_json path($res->{path})->slurp_raw;
         }
         else
         {
