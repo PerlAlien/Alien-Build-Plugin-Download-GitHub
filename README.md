@@ -102,6 +102,11 @@ Regular expression which the asset name should match.  The default is `qr/\.tar\
 The format of the asset.  This is passed to [Alien::Build::Plugin::Extract::Negotiate](https://metacpan.org/pod/Alien::Build::Plugin::Extract::Negotiate)
 so any format supported by that is valid.
 
+\[version 0.10\]
+
+If this is set to `none` then no extractor will be added.  This allows for you to write
+your own extractor code, or use a non-standard one.
+
 ## asset\_convert\_version
 
 This is an optional code reference which can be used to modify the version.  For example,
