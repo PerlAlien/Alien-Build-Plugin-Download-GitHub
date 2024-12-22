@@ -1,3 +1,5 @@
 /Alien-Build-Plugin-Download-GitHub-*
 /.build
 /.tmp
+*.old
+*.orig
